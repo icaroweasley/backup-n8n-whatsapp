@@ -1,1 +1,62 @@
-{"updatedAt":"2025-12-02T21:18:12.011Z","createdAt":"2025-11-28T14:43:41.171Z","id":"1Xwz4rUeucsgxhh0","name":"Postgres","active":false,"isArchived":false,"nodes":[{"parameters":{},"type":"n8n-nodes-base.manualTrigger","typeVersion":1,"position":[0,0],"id":"3ec537d2-6a15-4322-a2d3-2fd443767e52","name":"When clicking ‘Execute workflow’"},{"parameters":{"operation":"executeQuery","query":"UPDATE clientes \nSET instance_name = 'karu vps' \nWHERE instance_name = 'karu';","options":{}},"type":"n8n-nodes-base.postgres","typeVersion":2.6,"position":[208,0],"id":"1e10d9c1-9ce5-4ccd-a83f-d09a398d221c","name":"Execute a SQL query","credentials":{"postgres":{"id":"MY2N95aYUWR6kF9X","name":"Postgres account"}}}],"connections":{"When clicking ‘Execute workflow’":{"main":[[{"node":"Execute a SQL query","type":"main","index":0}]]}},"settings":{"executionOrder":"v1"},"staticData":null,"meta":{"templateCredsSetupCompleted":true},"pinData":{},"versionId":"8c26b535-417c-4692-ba1a-9e8c6db08fc5","activeVersionId":null,"triggerCount":0,"shared":[{"updatedAt":"2025-11-28T14:43:41.171Z","createdAt":"2025-11-28T14:43:41.171Z","role":"workflow:owner","workflowId":"1Xwz4rUeucsgxhh0","projectId":"5OFwUiu2XaJEkX8v"}],"activeVersion":null,"tags":[],"safeFileName":"postgres.json"}
+{
+  "name": "Postgres",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3ec537d2-6a15-4322-a2d3-2fd443767e52",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE clientes \nSET instance_name = 'karu vps' \nWHERE instance_name = 'karu';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        208,
+        0
+      ],
+      "id": "1e10d9c1-9ce5-4ccd-a83f-d09a398d221c",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "MY2N95aYUWR6kF9X",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8c26b535-417c-4692-ba1a-9e8c6db08fc5",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0a9dea583c235a84c1f9b58ec167ddfe699eeddc50d04d8fc8a30fe5660866a4"
+  },
+  "id": "1Xwz4rUeucsgxhh0",
+  "tags": []
+}

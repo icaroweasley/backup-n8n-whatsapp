@@ -1,0 +1,195 @@
+{
+  "name": "Backup GitHub",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 24
+            }
+          ]
+        }
+      },
+      "id": "afa0d3e9-a741-4a02-b5a0-b4d9bd83cf27",
+      "name": "Todo dia",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        128,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "command": "mkdir -p /home/node/backup/workflows && rm -rf /home/node/backup/workflows/*"
+      },
+      "id": "cea51b3f-710b-426b-b921-5624facbaf58",
+      "name": "Limpar Pasta Antiga",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        352,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "filters": {},
+        "requestOptions": {}
+      },
+      "id": "56fe3965-5bdd-4297-bc64-ad29cefce907",
+      "name": "Pegar Todos Fluxos",
+      "type": "n8n-nodes-base.n8n",
+      "typeVersion": 1,
+      "position": [
+        576,
+        176
+      ],
+      "credentials": {
+        "n8nApi": {
+          "id": "6tHnIWphQmxEegRm",
+          "name": "n8n account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of items) {\n  // Pega o nome ou usa 'sem_nome' se estiver vazio\n  let name = item.json.name || 'sem_nome';\n  \n  // Limpa caracteres especiais, deixa só letras e numeros\n  name = name.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();\n  \n  // Se depois de limpar ficou vazio, usa o ID\n  if (!name || name === '_') {\n    name = 'workflow_' + item.json.id;\n  }\n  \n  // Cria uma propriedade nova garantida\n  item.json.safeFileName = name + '.json';\n}\n\nreturn items;"
+      },
+      "id": "c82ac6d9-cef4-4657-bde9-9b3024c32b58",
+      "name": "Gerar Nome Seguro",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "jsonToBinary",
+        "options": {
+          "fileName": "={{ $json.safeFileName }}",
+          "keepSource": true
+        }
+      },
+      "id": "a7f59997-b732-4ddf-b6cd-9be5c7e9e4ae",
+      "name": "Converter em Arquivo",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "=/home/node/backup/workflows/{{ $json.safeFileName }}",
+        "options": {}
+      },
+      "id": "e3468164-e218-492f-8d23-f0345dd2b7f9",
+      "name": "Salvar no Disco",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "command": "cd /home/node/backup && git branch -M main && git add . && git commit -m \"Backup Automatico $(date)\" && git push -f --set-upstream origin main"
+      },
+      "id": "7d9b0372-3d7d-4bcc-be24-f1df5283c096",
+      "name": "Enviar pro GitHub",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        1456,
+        176
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Todo dia": {
+      "main": [
+        [
+          {
+            "node": "Limpar Pasta Antiga",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpar Pasta Antiga": {
+      "main": [
+        [
+          {
+            "node": "Pegar Todos Fluxos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pegar Todos Fluxos": {
+      "main": [
+        [
+          {
+            "node": "Gerar Nome Seguro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gerar Nome Seguro": {
+      "main": [
+        [
+          {
+            "node": "Converter em Arquivo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Converter em Arquivo": {
+      "main": [
+        [
+          {
+            "node": "Salvar no Disco",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Salvar no Disco": {
+      "main": [
+        [
+          {
+            "node": "Enviar pro GitHub",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "050957a2-d222-4c79-8481-9617a784b875",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "0a9dea583c235a84c1f9b58ec167ddfe699eeddc50d04d8fc8a30fe5660866a4"
+  },
+  "id": "KZ2xBfj0glzjOEit",
+  "tags": []
+}
