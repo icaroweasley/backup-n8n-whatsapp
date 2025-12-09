@@ -1,7 +1,7 @@
-version: '3.8'
+﻿version: '3.8'
 
 services:
-  # PostgreSQL Database
+  # PostgreSQL
   postgres:
     image: postgres:16.4-alpine
     container_name: postgres
@@ -40,9 +40,9 @@ services:
       timeout: 5s
       retries: 5
 
-  # n8n
+  # n8n - VERSÃO 1.122.4
   n8n:
-    image: n8nio/n8n:1.119.1
+    image: n8nio/n8n:1.122.4
     container_name: n8n
     restart: unless-stopped
     environment:
